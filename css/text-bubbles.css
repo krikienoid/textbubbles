@@ -1,0 +1,228 @@
+/**
+ * Text Bubbles
+ *
+ * Visualize text as a series of
+ * bubbles representing word size.
+ *
+ *
+ * Contributors:
+ *
+ * Ken Sugiura, reddit.com/u/krikienoid
+ * reddit.com/u/qi1
+ * reddit.com/u/kylemit
+ *
+ * MIT License 2014
+ */
+
+/* //// Basic Structure //// */
+
+* {
+	margin   : 0;
+	padding  : 0;
+	overflow : hidden;
+	box-sizing         : border-box;
+	-moz-box-sizing    : border-box;
+	-webkit-box-sizing : border-box;
+}
+
+html,
+body,
+.wrapper-main {
+	width  : 100%;
+	height : 100%;
+}
+
+.wrapper-head,
+.wrapper-body,
+.wrapper-head-title,
+.wrapper-head-block {
+	float : left;
+}
+
+/* Head */
+
+.wrapper-head {
+	background-color    : #333;
+	border              : 0 groove #555;
+	border-right-width  : 4px;
+	border-bottom-width : 0;
+	color   : whitesmoke;
+	padding : 6px;
+}
+
+.wrapper-head-title,
+.wrapper-head-block,
+.wrapper-head-hidable {
+	width   : 100%;
+	height  : auto;
+}
+
+.wrapper-head-title,
+.wrapper-head-block {
+	padding : 6px;
+}
+
+.wrapper-head-title {
+	background-color : #333;
+	border           : 0 groove #555;
+}
+
+.wrapper-head-hidable {
+	background    : rgba(0, 0, 0, 0.8);
+	border-radius : 3px;
+	color         : gainsboro;
+	padding       : 8px;
+}
+
+.wrapper-head textarea {
+	max-width : 100%;
+	width     : 100%;
+	height    : 100px;
+	overflow  : auto;
+}
+
+/* Body */
+
+.wrapper-body {
+	width  : 100%;
+	height : 100%;
+	overflow         : auto;
+	background-color : white;
+}
+
+.wrapper-text {
+	width     : 100%;
+	padding   : 24px;
+	display   : flex;
+	flex-wrap : wrap;
+	flex      : 1;
+	justify-content : center;
+	align-items     : center;
+}
+
+/* //// Screen Sizes //// */
+
+/* Desktop (default) */
+
+.wrapper-main {
+	padding-top  : 0;
+	padding-left : 240px;
+}
+
+.wrapper-head {
+	width       : 240px;
+	height      : 100%;
+	margin-top  : 0;
+	margin-left : -240px;
+}
+
+/* Mobile */
+
+@media screen and (max-width : 600px) and (orientation : portrait) {
+
+	.wrapper-main {
+		padding-top  : 240px;
+		padding-left : 0;
+	}
+
+	.wrapper-head {
+		width       : 100%;
+		height      : 240px;
+		margin-top  : -240px;
+		margin-left : 0;
+		padding-top : 72px;
+		overflow    : auto;
+		border-right-width  : 0;
+		border-bottom-width : 4px;
+	}
+
+	.wrapper-head-title {
+		position : fixed;
+		height   : 72px;
+		margin   : -72px -6px 0 -6px;
+		border-bottom-width : 4px;
+	}
+
+}
+
+/* //// Styling //// */
+
+.wrapper-head h1,
+.wrapper-head h2,
+.wrapper-head p {
+	font-family : sans-serif;
+}
+
+.wrapper-head h1 {
+	font-size : 24pt;
+}
+
+.wrapper-head h2 {
+	font-size : 10pt;
+}
+
+.wrapper-head p,
+.wrapper-head hr {
+	margin-bottom : 4px;
+	font-size     : 10pt;
+	border-color  : whitesmoke ;
+}
+
+.text-bubbles-stat {
+	color       : gold;
+	font-weight : bold;
+}
+
+#text-bubbles-get-url {
+	position : absolute;
+	right    : 10px;
+	bottom   : 10px;
+	background-color : #333;
+	border        : 2px solid #555;
+	border-radius : 3px;
+	color         : gainsboro;
+	padding       : 8px;
+}
+
+#text-bubbles-get-url:hover {
+	border-color : white;
+	color        : white;
+	transition   : .2s;
+}
+
+/* //// Bubbles //// */
+
+.word-bubble {
+	position      : relative;
+	background    : lightgray;
+	border-radius : 50%;
+	margin  : 1px;
+	float   : left;
+	display : inline-block;
+	overflow   : visible;
+	box-shadow : inset 200px 200px rgba(0,0,0,0);
+	transition : box-shadow .2s;
+}
+
+.word-bubble:hover {
+	z-index : 100;
+	box-shadow : inset 200px 200px rgba(0,0,0,.4);
+	display  : inline;
+	position : relative;
+}
+
+/* CSS Tooltips */
+
+.word-bubble:hover::before {
+	display  : inline-block;
+	position : absolute;
+	top      : 15px;
+	background    : rgba(0, 0, 0, 0.8);
+	border-radius : 3px;
+	color     : whitesmoke;
+	font      : 12px/22px sans-serif;
+	font-size : smaller;
+	padding   : 0 10px;
+	content   : attr(data-title);
+	white-space : nowrap;
+}
