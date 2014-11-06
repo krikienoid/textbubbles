@@ -5,7 +5,7 @@
 #  
 
 
-[Demo HERE](http://krikienoid.github.io/TextBubbles2/index.html)
+[Demo HERE](http://krikienoid.github.io/textbubbles/index.html)
 
 
 ## What does it do?
