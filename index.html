@@ -36,16 +36,14 @@
 		<div class="wrapper-head">
 			<div class="wrapper-head-title">
 				<h1>Text Bubbles</h1>
-				<p>
-					Visualize text as a series of bubbles representing word size.
-				</p>
+				<p>Visualize text as a series of bubbles representing word size.</p>
 				<hr />
 			</div>
 			<div class="wrapper-head-block" onclick="this.classList.toggle('open')">
 				<h2>Settings</h2>
 				<div class="wrapper-head-hidable">
 					<p>
-						<select id="text-bubbles-set-type">
+						<select id="textbubbles-set-type">
 							<option value="linear">Linear</option>
 							<option value="quadratic">Quadratic</option>
 							<option value="cubic"  >Cubic</option>
@@ -53,24 +51,24 @@
 						Bubble Size
 					</p>
 					<p>
-						<input type="range" id="text-bubbles-set-scale" />
+						<input type="range" id="textbubbles-set-scale" />
 						&nbsp;Scale
 					</p>
 					<p>
-						<input type="range" id="text-bubbles-set-spacing" />
+						<input type="range"    id="textbubbles-set-spacing" />
 						&nbsp;Spacing&nbsp;
-						<input type="checkbox" id="text-bubbles-set-gridded" />
+						<input type="checkbox" id="textbubbles-set-gridded" />
 						&nbsp;Grid&nbsp;
-						<input type="checkbox" id="text-bubbles-set-breaks" />
+						<input type="checkbox" id="textbubbles-set-breaks"  />
 						&nbsp;Breaks&nbsp;
-						<input type="button" id="text-bubbles-set-reset" value="Reset" />
+						<input type="button"   id="textbubbles-set-reset" value="Reset" />
 					</p>
 				</div>
 			</div>
 			<div class="wrapper-head-block open" onclick="this.classList.toggle('open')">
 				<h2>Text Input</h2>
 				<div class="wrapper-head-hidable">
-					<textarea id="text-bubbles-input" placeholder="Enter text here ...">
+					<textarea id="textbubbles-input" placeholder="Enter text here ...">
 The Cat in the Hat
 
 The sun did not shine. 
@@ -150,40 +148,40 @@ Said the cat…
 				<div class="wrapper-head-hidable">
 					<p>
 						Word count:
-						<span class="text-bubbles-stat" id="text-bubbles-stat-wordnums"></span>
+						<span class="stat-out" id="stat-out-wordnums"></span>
 					</p>
 					<!--<p>
 						Word count (only letters):
-						<span class="text-bubbles-stat" id="text-bubbles-stat-words"></span>
+						<span class="stat-out" id="stat-out-words"></span>
 					</p>-->
 					<p>
 						Char count (any char):
-						<span class="text-bubbles-stat" id="text-bubbles-stat-chars"></span>
+						<span class="stat-out" id="stat-out-chars"></span>
 					</p>
 					<p>
 						Char count (alphanum):
-						<span class="text-bubbles-stat" id="text-bubbles-stat-alphnums"></span>
+						<span class="stat-out" id="stat-out-alphnums"></span>
 					</p>
 					<p>
 						Char count (letters):
-						<span class="text-bubbles-stat" id="text-bubbles-stat-letters"></span>
+						<span class="stat-out" id="stat-out-letters"></span>
 					</p>
 					<p>
 						Average word size:
-						<span class="text-bubbles-stat" id="text-bubbles-stat-avglen"></span>
+						<span class="stat-out" id="stat-out-avglen"></span>
 					</p>
 					<p>
 						Longest word:
-						<span class="text-bubbles-stat" id="text-bubbles-stat-longest"></span>
+						<span class="stat-out" id="stat-out-longest"></span>
 					</p>
 				</div>
 			</div>
 		</div>
 		<div class="wrapper-body">
-			<div class="wrapper-text" id="text-bubbles-output"></div>
+			<div class="wrapper-text" id="textbubbles-output"></div>
 		</div>
-		<input class="text-bubbles-corner-button" type="button" style="display:none;" id="text-bubbles-get-url" value="Generate Link" />
-		<a class="text-bubbles-corner-button" href="https://github.com/krikienoid/TextBubbles">Github Link.</a>
+		<input class="corner-button" type="button" style="display:none;" id="textbubbles-get-url" value="Generate Link" />
+		<a class="corner-button" href="https://github.com/krikienoid/TextBubbles">Github Link.</a>
 	</div>
 </body>
 

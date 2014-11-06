@@ -137,15 +137,15 @@ var textBubbles = (function () {
 
 		if (isStatsOn) {
 			stats.chars  = $input.val().length;
-			$('#text-bubbles-stat-wordnums') .text(stats.wordNums);
-		//	$('#text-bubbles-stat-words')    .text(stats.words);
-			$('#text-bubbles-stat-chars')    .text(stats.chars);
-			$('#text-bubbles-stat-alphnums') .text(stats.alphNums);
-			$('#text-bubbles-stat-letters')  .text(stats.letters);
-			$('#text-bubbles-stat-avglen')   .text(
+			$('#textbubbles-stat-wordnums') .text(stats.wordNums);
+		//	$('#textbubbles-stat-words')    .text(stats.words);
+			$('#textbubbles-stat-chars')    .text(stats.chars);
+			$('#textbubbles-stat-alphnums') .text(stats.alphNums);
+			$('#textbubbles-stat-letters')  .text(stats.letters);
+			$('#textbubbles-stat-avglen')   .text(
 				(stats.alphNums)? (stats.alphNums / stats.wordNums).toFixed(1) : 0
 			);
-			$('#text-bubbles-stat-longest')  .text(
+			$('#textbubbles-stat-longest')  .text(
 				'[' + stats.longest.replace(rgxNonAlphNum, '').length + ']' + stats.longest
 			);
 		}
@@ -165,10 +165,10 @@ var textBubbles = (function () {
 
 	$(document).ready(function () {
 
-		$input  = $('#text-bubbles-input');
-		$output = $('#text-bubbles-output');
+		$input  = $('#textbubbles-input');
+		$output = $('#textbubbles-output');
 
-		$('#text-bubbles-set-type')
+		$('#textbubbles-set-type')
 			.on(
 				'change',
 				function () {
@@ -182,7 +182,7 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-scale')
+		$('#textbubbles-set-scale')
 			.val(scale * 10)
 			.on(
 				'change',
@@ -195,7 +195,7 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-spacing')
+		$('#textbubbles-set-spacing')
 			.val(spacing * 5)
 			.on(
 				'change',
@@ -208,7 +208,7 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-gridded')
+		$('#textbubbles-set-gridded')
 			.on(
 				'change',
 				function () {
@@ -217,7 +217,7 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-breaks')
+		$('#textbubbles-set-breaks')
 			.on(
 				'change',
 				function () {
@@ -226,21 +226,21 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-reset')
+		$('#textbubbles-set-reset')
 			.on(
 				'click',
 				function () {
 					scale     = DEF_SCALE;
 					spacing   = DEF_SPACING;
 					isGridded = false;
-					$('#text-bubbles-set-scale').val(scale * 10);
-					$('#text-bubbles-set-spacing').val(spacing * 5);
-					$('#text-bubbles-set-gridded').attr('checked', isGridded);
+					$('#textbubbles-set-scale').val(scale * 10);
+					$('#textbubbles-set-spacing').val(spacing * 5);
+					$('#textbubbles-set-gridded').attr('checked', isGridded);
 					updateBubbles();
 				}
 			);
 
-		$('#text-bubbles-get-url')
+		$('#textbubbles-get-url')
 			.on(
 				'click',
 				function () {

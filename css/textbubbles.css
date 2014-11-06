@@ -168,12 +168,12 @@ body,
 	font-size     : 10pt;
 }
 
-.text-bubbles-stat {
+.stat-out {
 	color       : gold;
 	font-weight : bold;
 }
 
-.text-bubbles-corner-button {
+.corner-button {
 	display  : block;
 	position : absolute;
 	right    : 10px;
@@ -187,7 +187,7 @@ body,
 	text-decoration : none;
 }
 
-.text-bubbles-corner-button:hover {
+.corner-button:hover {
 	border-color : white;
 	color        : white;
 	transition   : .2s;
