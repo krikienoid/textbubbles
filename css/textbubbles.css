@@ -94,8 +94,8 @@ body,
 	width     : 100%;
 	display   : flex;
 	padding   : 24px;
-	flex-wrap : wrap;
 	flex      : 1;
+	flex-wrap : wrap;
 	justify-content : center;
 	align-items     : center;
 }

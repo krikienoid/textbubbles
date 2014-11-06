@@ -16,21 +16,33 @@
 
 var textBubbles = (function () {
 
+	// Enum bubble size type
 	var kBT = {
 		LINEAR : 0, QUADRATIC : 1, CUBIC : 2
 	};
 
-	var BASE_LEN  = 8,
-		BASE_QUAD = Math.sqrt(BASE_LEN),
-		BASE_CUBE = Math.pow(BASE_LEN, 2/3);
+	// Bubble size common size
+	// (words of size BASE_LEN will have the same bubble size at any bubble size type.)
+	var BASE_LEN  = 8;
 
+	// Bubble size scale
+	var kBS = {};
+		kBS[kBT.LINEAR]    = 1;
+		kBS[kBT.QUADRATIC] = Math.sqrt(BASE_LEN);
+		kBS[kBT.CUBIC]     = Math.pow(BASE_LEN, 2/3);
+
+	// Settings
 	var DEF_SCALE    = 5,
 		DEF_SPACING  = 1,
 		scale        = DEF_SCALE,
 		spacing      = DEF_SPACING,
 		isBreaksOn   = true,
 		isGridded    = false,
-		regExpUTF    = (
+		isStatsOn    = true,
+		bubbleType   = kBT.LINEAR;
+
+	// Regex
+	var regExpUTF     = (
 			'\\u00ad' +
 			'\\u00c0-\\u00d6\\u00d8-\\u00f6\\u00d8-\\u01bf' + // Extended Latin
 			'\\u01c4-\\u02af\\u0370-\\u0373\\u0376\\u0377'  + // Greek and Russian
@@ -54,16 +66,18 @@ var textBubbles = (function () {
 		rgxDelimiter  = new RegExp('[\\s\\0]'),
 		rgxTab        = new RegExp('\\t', 'g'),
 		rgxBreak      = new RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
-		rgxNonWord    = new RegExp('[^' + regExpUTF + '\\w\\.\\-\'’]'),
-		rgxNonAlphNum = new RegExp('[^' + regExpUTF + '\\w]', 'g'),
-		rgxNonLetter  = new RegExp('[^a-zA-Z' + regExpUTF + ']', 'g'),
-		bubbleType    = kBT.LINEAR;
+		rgxNonWord    = new RegExp('[^\\w'       + regExpUTF + '\\.\\-\'’]'),
+		rgxNonAlphNum = new RegExp('[^a-zA-Z\\d' + regExpUTF + ']', 'g'),
+		rgxNonLetter  = new RegExp('[^a-zA-Z'    + regExpUTF + ']', 'g');
 
+	// jQuery refs
 	var $input,
 		$output;
 
-	var isStatsOn = true,
-		stats;
+	// Stats
+	var stats;
+
+	// Private Functions
 
 	function resetStats () {
 		stats = {
@@ -76,18 +90,17 @@ var textBubbles = (function () {
 		};
 	}
 
-	function getSize (x) {
+	function getSize (size) {
 		switch (bubbleType) {
-			case kBT.LINEAR    : return x * scale;
-			case kBT.QUADRATIC : return Math.sqrt(x)     * scale * BASE_QUAD;
-			case kBT.CUBIC     : return Math.pow(x, 1/3) * scale * BASE_CUBE;
-			default            : return x * scale;
+			case kBT.QUADRATIC : size = Math.sqrt(size);     break;
+			case kBT.CUBIC     : size = Math.pow(size, 1/3); break;
 		}
+		return size * scale * kBS[bubbleType];
 	}
 
 	function updateBubbles () {
 
-		var words   = $input.val().split(rgxBoundary),
+		var words   = $input.val().split(rgxNonWord),
 			bubbles = [];
 
 		resetStats();
@@ -125,20 +138,12 @@ var textBubbles = (function () {
 					}
 
 				}
-				/*else if (isBreaksOn) {
-					bubbles.push(
-						word
-							.replace(rgxTab,   '&nbsp;&nbsp;&nbsp;&nbsp;')//&#09;
-							.replace(rgxBreak, '<br />')
-					);
-				}*/
 			}
 		);
 
 		if (isStatsOn) {
 			stats.chars  = $input.val().length;
 			$('#textbubbles-stat-wordnums') .text(stats.wordNums);
-		//	$('#textbubbles-stat-words')    .text(stats.words);
 			$('#textbubbles-stat-chars')    .text(stats.chars);
 			$('#textbubbles-stat-alphnums') .text(stats.alphNums);
 			$('#textbubbles-stat-letters')  .text(stats.letters);
@@ -162,6 +167,8 @@ var textBubbles = (function () {
 				.trigger('input');
 		}
 	}
+
+	// Init
 
 	$(document).ready(function () {
 
@@ -213,15 +220,6 @@ var textBubbles = (function () {
 				'change',
 				function () {
 					isGridded = !!this.checked;
-					updateBubbles();
-				}
-			);
-
-		$('#textbubbles-set-breaks')
-			.on(
-				'change',
-				function () {
-					isBreaksOn = !!this.checked;
 					updateBubbles();
 				}
 			);
