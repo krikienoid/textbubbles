@@ -28,6 +28,7 @@ var textBubbles = (function () {
 		DEF_SPACING  = 1,
 		scale        = DEF_SCALE,
 		spacing      = DEF_SPACING,
+		isBreaksOn   = true,
 		isGridded    = false,
 		regExpUTF    = (
 			'\\u00ad' +
@@ -49,10 +50,14 @@ var textBubbles = (function () {
 			'\\u09dc-\\u09e1\\u09e6-\\u09f1' +
 			''
 			),
-		regExpSplit  = new RegExp('[^a-zA-Z' + regExpUTF + '\\d\\.\\-\'’]'),
-		regExpCount  = new RegExp('[^a-zA-Z' + regExpUTF + '\\d]', 'g'),
-		regExpLetter = new RegExp('[^a-zA-Z' + regExpUTF + ']', 'g'),
-		bubbleType   = kBT.LINEAR;
+		rgxBoundary   = new RegExp('\\b'),
+		rgxDelimiter  = new RegExp('[\\s\\0]'),
+		rgxTab        = new RegExp('\\t', 'g'),
+		rgxBreak      = new RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
+		rgxNonWord    = new RegExp('[^' + regExpUTF + '\\w\\.\\-\'’]'),
+		rgxNonAlphNum = new RegExp('[^' + regExpUTF + '\\w]', 'g'),
+		rgxNonLetter  = new RegExp('[^a-zA-Z' + regExpUTF + ']', 'g'),
+		bubbleType    = kBT.LINEAR;
 
 	var $input,
 		$output;
@@ -62,11 +67,11 @@ var textBubbles = (function () {
 
 	function resetStats () {
 		stats = {
+			wordNums : 0,
 			words    : 0,
 			chars    : 0,
 			alphNums : 0,
 			letters  : 0,
-			avgLen   : 0,
 			longest  : ''
 		};
 	}
@@ -82,7 +87,7 @@ var textBubbles = (function () {
 
 	function updateBubbles () {
 
-		var words   = $input.val().split(regExpSplit),
+		var words   = $input.val().split(rgxBoundary),
 			bubbles = [];
 
 		resetStats();
@@ -90,7 +95,7 @@ var textBubbles = (function () {
 		$.each(
 			words, 
 			function (i, word) {
-				var len  = word.replace(regExpCount, '').length,
+				var len  = word.replace(rgxNonAlphNum, '').length,
 					size = getSize(len);
 
 				if (len) {
@@ -108,28 +113,40 @@ var textBubbles = (function () {
 							)
 					);
 					if (isStatsOn) {
-						stats.words    ++;
+						stats.wordNums++;
+						if (word.replace(rgxNonLetter, '').length) {
+							stats.words++;
+						}
 						stats.alphNums += len;
-						stats.letters  += word.replace(regExpLetter, '').length;
-						if (len > stats.longest.replace(regExpCount, '').length) {
+						stats.letters  += word.replace(rgxNonLetter, '').length;
+						if (len > stats.longest.replace(rgxNonAlphNum, '').length) {
 							stats.longest = word;
 						}
 					}
 
 				}
+				/*else if (isBreaksOn) {
+					bubbles.push(
+						word
+							.replace(rgxTab,   '&nbsp;&nbsp;&nbsp;&nbsp;')//&#09;
+							.replace(rgxBreak, '<br />')
+					);
+				}*/
 			}
 		);
 
 		if (isStatsOn) {
 			stats.chars  = $input.val().length;
-			stats.avgLen = (stats.alphNums / stats.words).toFixed(1);
-			$('#text-bubbles-stat-words')    .text(stats.words);
+			$('#text-bubbles-stat-wordnums') .text(stats.wordNums);
+		//	$('#text-bubbles-stat-words')    .text(stats.words);
 			$('#text-bubbles-stat-chars')    .text(stats.chars);
 			$('#text-bubbles-stat-alphnums') .text(stats.alphNums);
 			$('#text-bubbles-stat-letters')  .text(stats.letters);
-			$('#text-bubbles-stat-avglen')   .text(stats.avgLen);
+			$('#text-bubbles-stat-avglen')   .text(
+				(stats.alphNums)? (stats.alphNums / stats.wordNums).toFixed(1) : 0
+			);
 			$('#text-bubbles-stat-longest')  .text(
-				'[' + stats.longest.replace(regExpCount, '').length + ']' + stats.longest
+				'[' + stats.longest.replace(rgxNonAlphNum, '').length + ']' + stats.longest
 			);
 		}
 
@@ -196,6 +213,15 @@ var textBubbles = (function () {
 				'change',
 				function () {
 					isGridded = !!this.checked;
+					updateBubbles();
+				}
+			);
+
+		$('#text-bubbles-set-breaks')
+			.on(
+				'change',
+				function () {
+					isBreaksOn = !!this.checked;
 					updateBubbles();
 				}
 			);
