@@ -2,8 +2,6 @@
 
 ###### Visualize text as a series of bubbles representing word size.
 
-#  
-
 
 [Demo HERE](http://krikienoid.github.io/textbubbles/index.html)
 
