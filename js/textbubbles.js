@@ -16,20 +16,33 @@
 
 var textBubbles = (function () {
 
+	// Enum bubble size type
 	var kBT = {
 		LINEAR : 0, QUADRATIC : 1, CUBIC : 2
 	};
 
-	var BASE_LEN  = 8,
-		BASE_QUAD = Math.sqrt(BASE_LEN),
-		BASE_CUBE = Math.pow(BASE_LEN, 2/3);
+	// Bubble size common size
+	// (words of size BASE_LEN will have the same bubble size at any bubble size type.)
+	var BASE_LEN  = 8;
 
+	// Bubble size scale
+	var kBS = {};
+		kBS[kBT.LINEAR]    = 1;
+		kBS[kBT.QUADRATIC] = Math.sqrt(BASE_LEN);
+		kBS[kBT.CUBIC]     = Math.pow(BASE_LEN, 2/3);
+
+	// Settings
 	var DEF_SCALE    = 5,
 		DEF_SPACING  = 1,
 		scale        = DEF_SCALE,
 		spacing      = DEF_SPACING,
+		isBreaksOn   = true,
 		isGridded    = false,
-		regExpUTF    = (
+		isStatsOn    = true,
+		bubbleType   = kBT.LINEAR;
+
+	// Regex
+	var regExpUTF     = (
 			'\\u00ad' +
 			'\\u00c0-\\u00d6\\u00d8-\\u00f6\\u00d8-\\u01bf' + // Extended Latin
 			'\\u01c4-\\u02af\\u0370-\\u0373\\u0376\\u0377'  + // Greek and Russian
@@ -49,40 +62,45 @@ var textBubbles = (function () {
 			'\\u09dc-\\u09e1\\u09e6-\\u09f1' +
 			''
 			),
-		regExpSplit  = new RegExp('[^a-zA-Z' + regExpUTF + '\\d\\.\\-\'’]'),
-		regExpCount  = new RegExp('[^a-zA-Z' + regExpUTF + '\\d]', 'g'),
-		regExpLetter = new RegExp('[^a-zA-Z' + regExpUTF + ']', 'g'),
-		bubbleType   = kBT.LINEAR;
+		rgxBoundary   = new RegExp('\\b'),
+		rgxDelimiter  = new RegExp('[\\s\\0]'),
+		rgxTab        = new RegExp('\\t', 'g'),
+		rgxBreak      = new RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
+		rgxNonWord    = new RegExp('[^\\w'       + regExpUTF + '\\.\\-\'’]'),
+		rgxNonAlphNum = new RegExp('[^a-zA-Z\\d' + regExpUTF + ']', 'g'),
+		rgxNonLetter  = new RegExp('[^a-zA-Z'    + regExpUTF + ']', 'g');
 
+	// jQuery refs
 	var $input,
 		$output;
 
-	var isStatsOn = true,
-		stats;
+	// Stats
+	var stats;
+
+	// Private Functions
 
 	function resetStats () {
 		stats = {
+			wordNums : 0,
 			words    : 0,
 			chars    : 0,
 			alphNums : 0,
 			letters  : 0,
-			avgLen   : 0,
 			longest  : ''
 		};
 	}
 
-	function getSize (x) {
+	function getSize (size) {
 		switch (bubbleType) {
-			case kBT.LINEAR    : return x * scale;
-			case kBT.QUADRATIC : return Math.sqrt(x)     * scale * BASE_QUAD;
-			case kBT.CUBIC     : return Math.pow(x, 1/3) * scale * BASE_CUBE;
-			default            : return x * scale;
+			case kBT.QUADRATIC : size = Math.sqrt(size);     break;
+			case kBT.CUBIC     : size = Math.pow(size, 1/3); break;
 		}
+		return size * scale * kBS[bubbleType];
 	}
 
 	function updateBubbles () {
 
-		var words   = $input.val().split(regExpSplit),
+		var words   = $input.val().split(rgxNonWord),
 			bubbles = [];
 
 		resetStats();
@@ -90,7 +108,7 @@ var textBubbles = (function () {
 		$.each(
 			words, 
 			function (i, word) {
-				var len  = word.replace(regExpCount, '').length,
+				var len  = word.replace(rgxNonAlphNum, '').length,
 					size = getSize(len);
 
 				if (len) {
@@ -108,10 +126,13 @@ var textBubbles = (function () {
 							)
 					);
 					if (isStatsOn) {
-						stats.words    ++;
+						stats.wordNums++;
+						if (word.replace(rgxNonLetter, '').length) {
+							stats.words++;
+						}
 						stats.alphNums += len;
-						stats.letters  += word.replace(regExpLetter, '').length;
-						if (len > stats.longest.replace(regExpCount, '').length) {
+						stats.letters  += word.replace(rgxNonLetter, '').length;
+						if (len > stats.longest.replace(rgxNonAlphNum, '').length) {
 							stats.longest = word;
 						}
 					}
@@ -122,14 +143,15 @@ var textBubbles = (function () {
 
 		if (isStatsOn) {
 			stats.chars  = $input.val().length;
-			stats.avgLen = (stats.alphNums / stats.words).toFixed(1);
-			$('#text-bubbles-stat-words')    .text(stats.words);
-			$('#text-bubbles-stat-chars')    .text(stats.chars);
-			$('#text-bubbles-stat-alphnums') .text(stats.alphNums);
-			$('#text-bubbles-stat-letters')  .text(stats.letters);
-			$('#text-bubbles-stat-avglen')   .text(stats.avgLen);
-			$('#text-bubbles-stat-longest')  .text(
-				'[' + stats.longest.replace(regExpCount, '').length + ']' + stats.longest
+			$('#textbubbles-stat-wordnums') .text(stats.wordNums);
+			$('#textbubbles-stat-chars')    .text(stats.chars);
+			$('#textbubbles-stat-alphnums') .text(stats.alphNums);
+			$('#textbubbles-stat-letters')  .text(stats.letters);
+			$('#textbubbles-stat-avglen')   .text(
+				(stats.alphNums)? (stats.alphNums / stats.wordNums).toFixed(1) : 0
+			);
+			$('#textbubbles-stat-longest')  .text(
+				'[' + stats.longest.replace(rgxNonAlphNum, '').length + ']' + stats.longest
 			);
 		}
 
@@ -146,12 +168,14 @@ var textBubbles = (function () {
 		}
 	}
 
+	// Init
+
 	$(document).ready(function () {
 
-		$input  = $('#text-bubbles-input');
-		$output = $('#text-bubbles-output');
+		$input  = $('#textbubbles-input');
+		$output = $('#textbubbles-output');
 
-		$('#text-bubbles-set-type')
+		$('#textbubbles-set-type')
 			.on(
 				'change',
 				function () {
@@ -165,7 +189,7 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-scale')
+		$('#textbubbles-set-scale')
 			.val(scale * 10)
 			.on(
 				'change',
@@ -178,7 +202,7 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-spacing')
+		$('#textbubbles-set-spacing')
 			.val(spacing * 5)
 			.on(
 				'change',
@@ -191,7 +215,7 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-gridded')
+		$('#textbubbles-set-gridded')
 			.on(
 				'change',
 				function () {
@@ -200,21 +224,21 @@ var textBubbles = (function () {
 				}
 			);
 
-		$('#text-bubbles-set-reset')
+		$('#textbubbles-set-reset')
 			.on(
 				'click',
 				function () {
 					scale     = DEF_SCALE;
 					spacing   = DEF_SPACING;
 					isGridded = false;
-					$('#text-bubbles-set-scale').val(scale * 10);
-					$('#text-bubbles-set-spacing').val(spacing * 5);
-					$('#text-bubbles-set-gridded').attr('checked', isGridded);
+					$('#textbubbles-set-scale').val(scale * 10);
+					$('#textbubbles-set-spacing').val(spacing * 5);
+					$('#textbubbles-set-gridded').attr('checked', isGridded);
 					updateBubbles();
 				}
 			);
 
-		$('#text-bubbles-get-url')
+		$('#textbubbles-get-url')
 			.on(
 				'click',
 				function () {
