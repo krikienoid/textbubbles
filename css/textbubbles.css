@@ -180,11 +180,11 @@ body,
 	bottom   : 10px;
 	padding  : 8px;
 	background-color : #333;
-	border        : 2px solid #555;
-	border-radius : 3px;
-	color         : gainsboro;
-	font-family   : sans-serif;
-	text-decoration : none;
+	border           : 2px solid #555;
+	border-radius    : 3px;
+	color            : gainsboro;
+	font-family      : sans-serif;
+	text-decoration  : none;
 }
 
 .corner-button:hover {
@@ -193,7 +193,7 @@ body,
 	transition   : .2s;
 }
 
-/* //// Bubbles //// */
+/* Bubbles */
 
 .word-bubble {
 	display  : inline-block;
@@ -203,15 +203,15 @@ body,
 	overflow : visible;
 	background    : lightgray;
 	border-radius : 50%;
-	box-shadow : inset 200px 200px rgba(0,0,0,0);
-	transition : box-shadow .2s;
+	box-shadow    : inset 200px 200px rgba(0, 0, 0, 0);
+	transition    : box-shadow .2s;
 }
 
 .word-bubble:hover {
 	display  : inline;
 	position : relative;
 	z-index  : 100;
-	box-shadow : inset 200px 200px rgba(0,0,0,.4);
+	box-shadow : inset 200px 200px rgba(0, 0, 0, .4);
 }
 
 /* CSS Tooltips */
@@ -223,9 +223,9 @@ body,
 	padding  : 0 10px;
 	background    : rgba(0, 0, 0, 0.8);
 	border-radius : 3px;
-	color     : whitesmoke;
-	font      : 12px/22px sans-serif;
-	font-size : smaller;
+	color       : whitesmoke;
+	font        : 12px/22px sans-serif;
+	font-size   : smaller;
 	white-space : nowrap;
 	content     : attr(data-title);
 }
