@@ -7,7 +7,7 @@
  *
  * Contributors:
  *
- * Ken Sugiura, reddit.com/u/krikienoid
+ * reddit.com/u/krikienoid
  * reddit.com/u/qi1
  * reddit.com/u/kylemit
  *
