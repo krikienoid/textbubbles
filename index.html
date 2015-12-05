@@ -4,76 +4,76 @@
 
 <head>
 
-	<!-- Meta -->
-	<meta charset="utf-8" />
-	<meta name="viewport"    content="width=device-width, initial-scale=1" />
-	<meta name="author"      content="Ken Sugiura" />
-	<meta name="description" content="A web app for visualizing a body text as a series of circles representing word size." />
-	<meta name="keywords"    content="Bubble Text, Bubble Word, Vizualize" />
+    <!-- Meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport"    content="width=device-width, initial-scale=1" />
+    <meta name="author"      content="Ken Sugiura" />
+    <meta name="description" content="A web app for visualizing a body text as a series of circles representing word size." />
+    <meta name="keywords"    content="Bubble Text, Bubble Word, Vizualize" />
 
-	<!--
+    <!--
 
-	Text Bubbles
+    Text Bubbles
 
-		Visualize text as a series of
-		bubbles representing word size.
+        Visualize text as a series of
+        bubbles representing word size.
 
-	Contributors:
-		reddit.com/u/krikienoid
-		reddit.com/u/qi1
-		reddit.com/u/kylemit
+    Contributors:
+        reddit.com/u/krikienoid
+        reddit.com/u/qi1
+        reddit.com/u/kylemit
 
-	MIT License 2014
+    MIT License 2014
 
-	-->
+    -->
 
-	<title>Text Bubbles</title>
+    <title>Text Bubbles</title>
 
-	<!-- Libraries-->
-	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <!-- Libraries-->
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
 
-	<!-- TextBubbles -->
-	<link   type="text/css" rel="stylesheet" href="css/textbubbles.css" />
-	<script type="text/javascript" src="js/textbubbles.js"></script>
+    <!-- TextBubbles -->
+    <link   type="text/css" rel="stylesheet" href="css/textbubbles.css" />
+    <script type="text/javascript" src="js/textbubbles.js"></script>
 
 </head>
 
 <body>
-	<div class="wrapper-main" data-role="page">
-		<div class="wrapper-head">
-			<div class="wrapper-head-title">
-				<h1>Text Bubbles</h1>
-				<p>Visualize text as a series of bubbles representing word size.</p>
-				<hr />
-			</div>
-			<div class="wrapper-head-block" onclick="this.classList.toggle('open')">
-				<h2>Settings</h2>
-				<div class="wrapper-head-hidable">
-					<p>
-						<select id="textbubbles-set-type">
-							<option value="linear">Linear</option>
-							<option value="quadratic">Quadratic</option>
-							<option value="cubic"  >Cubic</option>
-						</select>
-						Bubble Size
-					</p>
-					<p>
-						<input type="range" id="textbubbles-set-scale" />
-						&nbsp;Scale
-					</p>
-					<p>
-						<input type="range"    id="textbubbles-set-spacing" />
-						&nbsp;Spacing&nbsp;
-						<input type="checkbox" id="textbubbles-set-gridded" />
-						&nbsp;Grid&nbsp;
-						<input type="button"   id="textbubbles-set-reset" value="Reset" />
-					</p>
-				</div>
-			</div>
-			<div class="wrapper-head-block open" onclick="this.classList.toggle('open')">
-				<h2>Text Input</h2>
-				<div class="wrapper-head-hidable">
-					<textarea id="textbubbles-input" placeholder="Enter text here ...">
+    <div class="wrapper-main" data-role="page">
+        <div class="wrapper-head">
+            <div class="wrapper-head-title">
+                <h1>Text Bubbles</h1>
+                <p>Visualize text as a series of bubbles representing word size.</p>
+                <hr />
+            </div>
+            <div class="wrapper-head-block" onclick="this.classList.toggle('open')">
+                <h2>Settings</h2>
+                <div class="wrapper-head-hidable">
+                    <p>
+                        <select id="textbubbles-set-type">
+                            <option value="linear">Linear</option>
+                            <option value="quadratic">Quadratic</option>
+                            <option value="cubic"  >Cubic</option>
+                        </select>
+                        Bubble Size
+                    </p>
+                    <p>
+                        <input type="range" id="textbubbles-set-scale" />
+                        &nbsp;Scale
+                    </p>
+                    <p>
+                        <input type="range"    id="textbubbles-set-spacing" />
+                        &nbsp;Spacing&nbsp;
+                        <input type="checkbox" id="textbubbles-set-gridded" />
+                        &nbsp;Grid&nbsp;
+                        <input type="button"   id="textbubbles-set-reset" value="Reset" />
+                    </p>
+                </div>
+            </div>
+            <div class="wrapper-head-block open" onclick="this.classList.toggle('open')">
+                <h2>Text Input</h2>
+                <div class="wrapper-head-hidable">
+                    <textarea id="textbubbles-input" placeholder="Enter text here ...">
 The Cat in the Hat
 
 The sun did not shine.
@@ -145,46 +145,46 @@ With a book on one hand!
 And a cup on my hat!
 But that is not ALL I can do!’
 Said the cat…
-					</textarea>
-				</div>
-			</div>
-			<div class="wrapper-head-block" onclick="this.classList.toggle('open')">
-				<h2>Statistics</h2>
-				<div class="wrapper-head-hidable">
-					<p>
-						Word count:
-						<span class="stat-out" id="textbubbles-stat-wordnums"></span>
-					</p>
-					<p>
-						Char count (any char):
-						<span class="stat-out" id="textbubbles-stat-chars"></span>
-					</p>
-					<p>
-						Char count (alphanum):
-						<span class="stat-out" id="textbubbles-stat-alphnums"></span>
-					</p>
-					<p>
-						Char count (letters):
-						<span class="stat-out" id="textbubbles-stat-letters"></span>
-					</p>
-					<p>
-						Average word size:
-						<span class="stat-out" id="textbubbles-stat-avglen"></span>
-					</p>
-					<p>
-						Longest word:
-						<span class="stat-out" id="textbubbles-stat-longest"></span>
-					</p>
-				</div>
-			</div>
-		</div>
-		<div class="wrapper-body">
-			<div class="wrapper-text" id="textbubbles-output"></div>
-		</div>
-		<a class="corner-button" href="https://github.com/krikienoid/textbubbles">
-			Github Link.
-		</a>
-	</div>
+                    </textarea>
+                </div>
+            </div>
+            <div class="wrapper-head-block" onclick="this.classList.toggle('open')">
+                <h2>Statistics</h2>
+                <div class="wrapper-head-hidable">
+                    <p>
+                        Word count:
+                        <span class="stat-out" id="textbubbles-stat-wordnums"></span>
+                    </p>
+                    <p>
+                        Char count (any char):
+                        <span class="stat-out" id="textbubbles-stat-chars"></span>
+                    </p>
+                    <p>
+                        Char count (alphanum):
+                        <span class="stat-out" id="textbubbles-stat-alphnums"></span>
+                    </p>
+                    <p>
+                        Char count (letters):
+                        <span class="stat-out" id="textbubbles-stat-letters"></span>
+                    </p>
+                    <p>
+                        Average word size:
+                        <span class="stat-out" id="textbubbles-stat-avglen"></span>
+                    </p>
+                    <p>
+                        Longest word:
+                        <span class="stat-out" id="textbubbles-stat-longest"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="wrapper-body">
+            <div class="wrapper-text" id="textbubbles-output"></div>
+        </div>
+        <a class="corner-button" href="https://github.com/krikienoid/textbubbles">
+            Github Link.
+        </a>
+    </div>
 </body>
 
 </html>

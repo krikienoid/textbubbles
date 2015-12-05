@@ -17,87 +17,87 @@
 /* //// Basic Structure //// */
 
 * {
-	margin   : 0;
-	padding  : 0;
-	overflow : hidden;
-	box-sizing         : border-box;
-	-moz-box-sizing    : border-box;
-	-webkit-box-sizing : border-box;
+    margin   : 0;
+    padding  : 0;
+    overflow : hidden;
+    box-sizing         : border-box;
+    -moz-box-sizing    : border-box;
+    -webkit-box-sizing : border-box;
 }
 
 html,
 body,
 .wrapper-main {
-	width  : 100%;
-	height : 100%;
+    width  : 100%;
+    height : 100%;
 }
 
 .wrapper-head,
 .wrapper-body,
 .wrapper-head-title,
 .wrapper-head-block {
-	float : left;
+    float : left;
 }
 
 /* Head */
 
 .wrapper-head {
-	padding             : 6px;
-	background-color    : #333;
-	border              : 0 groove #555;
-	border-right-width  : 4px;
-	border-bottom-width : 0;
-	color               : whitesmoke;
+    padding             : 6px;
+    background-color    : #333;
+    border              : 0 groove #555;
+    border-right-width  : 4px;
+    border-bottom-width : 0;
+    color               : whitesmoke;
 }
 
 .wrapper-head-title,
 .wrapper-head-block,
 .wrapper-head-hidable {
-	width   : 100%;
-	height  : auto;
+    width   : 100%;
+    height  : auto;
 }
 
 .wrapper-head-title,
 .wrapper-head-block {
-	padding : 6px;
+    padding : 6px;
 }
 
 .wrapper-head-title {
-	background-color : #333;
-	border           : 0 groove #555;
+    background-color : #333;
+    border           : 0 groove #555;
 }
 
 .wrapper-head-hidable {
-	padding       : 8px;
-	background    : rgba(0, 0, 0, 0.8);
-	border-radius : 3px;
-	color         : gainsboro;
+    padding       : 8px;
+    background    : rgba(0, 0, 0, 0.8);
+    border-radius : 3px;
+    color         : gainsboro;
 }
 
 .wrapper-head textarea {
-	max-width : 100%;
-	width     : 100%;
-	height    : 100px;
-	overflow  : auto;
+    max-width : 100%;
+    width     : 100%;
+    height    : 100px;
+    overflow  : auto;
 }
 
 /* Body */
 
 .wrapper-body {
-	width  : 100%;
-	height : 100%;
-	overflow         : auto;
-	background-color : white;
+    width  : 100%;
+    height : 100%;
+    overflow         : auto;
+    background-color : white;
 }
 
 .wrapper-text {
-	width     : 100%;
-	display   : flex;
-	padding   : 24px;
-	flex      : 1;
-	flex-wrap : wrap;
-	justify-content : center;
-	align-items     : center;
+    width     : 100%;
+    display   : flex;
+    padding   : 24px;
+    flex      : 1;
+    flex-wrap : wrap;
+    justify-content : center;
+    align-items     : center;
 }
 
 /* //// Screen Sizes //// */
@@ -105,43 +105,43 @@ body,
 /* Desktop (default) */
 
 .wrapper-main {
-	padding-top  : 0;
-	padding-left : 240px;
+    padding-top  : 0;
+    padding-left : 240px;
 }
 
 .wrapper-head {
-	width       : 240px;
-	height      : 100%;
-	margin-top  : 0;
-	margin-left : -240px;
+    width       : 240px;
+    height      : 100%;
+    margin-top  : 0;
+    margin-left : -240px;
 }
 
 /* Mobile */
 
 @media screen and (max-width : 600px) and (orientation : portrait) {
 
-	.wrapper-main {
-		padding-top  : 240px;
-		padding-left : 0;
-	}
+    .wrapper-main {
+        padding-top  : 240px;
+        padding-left : 0;
+    }
 
-	.wrapper-head {
-		width       : 100%;
-		height      : 240px;
-		margin-top  : -240px;
-		margin-left : 0;
-		padding-top : 72px;
-		overflow    : auto;
-		border-right-width  : 0;
-		border-bottom-width : 4px;
-	}
+    .wrapper-head {
+        width       : 100%;
+        height      : 240px;
+        margin-top  : -240px;
+        margin-left : 0;
+        padding-top : 72px;
+        overflow    : auto;
+        border-right-width  : 0;
+        border-bottom-width : 4px;
+    }
 
-	.wrapper-head-title {
-		height   : 72px;
-		position : fixed;
-		margin   : -72px -6px 0 -6px;
-		border-bottom-width : 4px;
-	}
+    .wrapper-head-title {
+        height   : 72px;
+        position : fixed;
+        margin   : -72px -6px 0 -6px;
+        border-bottom-width : 4px;
+    }
 
 }
 
@@ -150,82 +150,82 @@ body,
 .wrapper-head h1,
 .wrapper-head h2,
 .wrapper-head p {
-	font-family : sans-serif;
+    font-family : sans-serif;
 }
 
 .wrapper-head h1 {
-	font-size : 24pt;
+    font-size : 24pt;
 }
 
 .wrapper-head h2 {
-	font-size : 10pt;
+    font-size : 10pt;
 }
 
 .wrapper-head p,
 .wrapper-head hr {
-	margin-bottom : 4px;
-	border-color  : whitesmoke ;
-	font-size     : 10pt;
+    margin-bottom : 4px;
+    border-color  : whitesmoke ;
+    font-size     : 10pt;
 }
 
 .stat-out {
-	color       : gold;
-	font-weight : bold;
+    color       : gold;
+    font-weight : bold;
 }
 
 .corner-button {
-	display  : block;
-	position : absolute;
-	right    : 10px;
-	bottom   : 10px;
-	padding  : 8px;
-	background-color : #333;
-	border           : 2px solid #555;
-	border-radius    : 3px;
-	color            : gainsboro;
-	font-family      : sans-serif;
-	text-decoration  : none;
+    display  : block;
+    position : absolute;
+    right    : 10px;
+    bottom   : 10px;
+    padding  : 8px;
+    background-color : #333;
+    border           : 2px solid #555;
+    border-radius    : 3px;
+    color            : gainsboro;
+    font-family      : sans-serif;
+    text-decoration  : none;
 }
 
 .corner-button:hover {
-	border-color : white;
-	color        : white;
-	transition   : .2s;
+    border-color : white;
+    color        : white;
+    transition   : .2s;
 }
 
 /* Bubbles */
 
 .word-bubble {
-	display  : inline-block;
-	float    : left;
-	position : relative;
-	margin   : 1px;
-	overflow : visible;
-	background    : lightgray;
-	border-radius : 50%;
-	box-shadow    : inset 200px 200px rgba(0, 0, 0, 0);
-	transition    : box-shadow .2s;
+    display  : inline-block;
+    float    : left;
+    position : relative;
+    margin   : 1px;
+    overflow : visible;
+    background    : lightgray;
+    border-radius : 50%;
+    box-shadow    : inset 200px 200px rgba(0, 0, 0, 0);
+    transition    : box-shadow .2s;
 }
 
 .word-bubble:hover {
-	display  : inline;
-	position : relative;
-	z-index  : 100;
-	box-shadow : inset 200px 200px rgba(0, 0, 0, .4);
+    display  : inline;
+    position : relative;
+    z-index  : 100;
+    box-shadow : inset 200px 200px rgba(0, 0, 0, .4);
 }
 
 /* CSS Tooltips */
 
 .word-bubble:hover::before {
-	display  : inline-block;
-	position : absolute;
-	top      : 15px;
-	padding  : 0 10px;
-	background    : rgba(0, 0, 0, 0.8);
-	border-radius : 3px;
-	color       : whitesmoke;
-	font        : 12px/22px sans-serif;
-	font-size   : smaller;
-	white-space : nowrap;
-	content     : attr(data-title);
+    display  : inline-block;
+    position : absolute;
+    top      : 15px;
+    padding  : 0 10px;
+    background    : rgba(0, 0, 0, 0.8);
+    border-radius : 3px;
+    color       : whitesmoke;
+    font        : 12px/22px sans-serif;
+    font-size   : smaller;
+    white-space : nowrap;
+    content     : attr(data-title);
 }
