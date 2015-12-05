@@ -14,16 +14,20 @@
  * MIT License 2014
  */
 
-var textBubbles = (function () {
+var textBubbles = (function (window, document, $, undefined) {
+
+    'use strict';
+
+    //
+    // Vars
+    //
 
     // Enum bubble size type
-    var kBT = {
-        LINEAR : 0, QUADRATIC : 1, CUBIC : 2
-    };
+    var kBT = {LINEAR : 0, QUADRATIC : 1, CUBIC : 2};
 
     // Bubble size common size
     // (words of size BASE_LEN will have the same bubble size at any bubble size type.)
-    var BASE_LEN  = 8;
+    var BASE_LEN = 8;
 
     // Bubble size scale
     var kBS = {};
@@ -42,7 +46,7 @@ var textBubbles = (function () {
         bubbleType   = kBT.LINEAR;
 
     // Regex
-    var regExpUTF     = (
+    var rgxUTF        = (
             '\\u00ad' +
             '\\u00c0-\\u00d6\\u00d8-\\u00f6\\u00d8-\\u01bf' + // Extended Latin
             '\\u01c4-\\u02af\\u0370-\\u0373\\u0376\\u0377'  + // Greek and Russian
@@ -61,23 +65,25 @@ var textBubbles = (function () {
             '\\u09aa-\\u09b0\\u09b2\\u09b6-\\u09b9' +
             '\\u09dc-\\u09e1\\u09e6-\\u09f1' +
             ''
-            ),
+        ),
         rgxBoundary   = new RegExp('\\b'),
         rgxDelimiter  = new RegExp('[\\s\\0]'),
         rgxTab        = new RegExp('\\t', 'g'),
         rgxBreak      = new RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
-        rgxNonWord    = new RegExp('[^\\w'       + regExpUTF + '\\.\\-\'’]'),
-        rgxNonAlphNum = new RegExp('[^a-zA-Z\\d' + regExpUTF + ']', 'g'),
-        rgxNonLetter  = new RegExp('[^a-zA-Z'    + regExpUTF + ']', 'g');
+        rgxNonWord    = new RegExp('[^\\w'       + rgxUTF + '\\.\\-\'’]'),
+        rgxNonAlphNum = new RegExp('[^a-zA-Z\\d' + rgxUTF + ']', 'g'),
+        rgxNonLetter  = new RegExp('[^a-zA-Z'    + rgxUTF + ']', 'g');
 
-    // jQuery refs
+    // DOM element refs
     var $input,
         $output;
 
     // Stats
     var stats;
 
+    //
     // Private Functions
+    //
 
     function resetStats () {
         stats = {
@@ -105,41 +111,39 @@ var textBubbles = (function () {
 
         resetStats();
 
-        $.each(
-            words,
-            function (i, word) {
-                var len  = word.replace(rgxNonAlphNum, '').length,
-                    size = getSize(len);
+        $.each(words, function (i, word) {
 
-                if (len) {
-                    bubbles.push(
-                        $('<div />')
-                            .addClass('word-bubble')
-                            .attr('data-title', '[' + len + '] ' + word)
-                            .width(size)
-                            .height(size)
-                            .css('background-color', 'hsl(' + (len * 7 - 300) + ', 50%, 50%)')
-                            .css(
-                                (isGridded)?
-                                    {'margin' : (spacing - size + 10) / 2} :
-                                    {'margin-right' : spacing}
-                            )
-                    );
-                    if (isStatsOn) {
-                        stats.wordNums++;
-                        if (word.replace(rgxNonLetter, '').length) {
-                            stats.words++;
-                        }
-                        stats.alphNums += len;
-                        stats.letters  += word.replace(rgxNonLetter, '').length;
-                        if (len > stats.longest.replace(rgxNonAlphNum, '').length) {
-                            stats.longest = word;
-                        }
+            var len  = word.replace(rgxNonAlphNum, '').length,
+                size = getSize(len);
+
+            if (len) {
+                bubbles.push(
+                    $('<div />')
+                        .addClass('word-bubble')
+                        .attr('data-title', '[' + len + '] ' + word)
+                        .width(size)
+                        .height(size)
+                        .css('background-color', 'hsl(' + (len * 7 - 300) + ', 50%, 50%)')
+                        .css(
+                            (isGridded)?
+                                {'margin' : (spacing - size + 10) / 2} :
+                                {'margin-right' : spacing}
+                        )
+                );
+                if (isStatsOn) {
+                    stats.wordNums++;
+                    if (word.replace(rgxNonLetter, '').length) {
+                        stats.words++;
                     }
-
+                    stats.alphNums += len;
+                    stats.letters  += word.replace(rgxNonLetter, '').length;
+                    if (len > stats.longest.replace(rgxNonAlphNum, '').length) {
+                        stats.longest = word;
+                    }
                 }
             }
-        );
+
+        });
 
         if (isStatsOn) {
             stats.chars  = $input.val().length;
@@ -168,95 +172,83 @@ var textBubbles = (function () {
         }
     }
 
+    //
     // Init
+    //
 
     $(document).ready(function () {
+
+        // Get DOM elements
 
         $input  = $('#textbubbles-input');
         $output = $('#textbubbles-output');
 
+        // Event handlers
+
         $('#textbubbles-set-type')
-            .on(
-                'change',
-                function () {
-                    if     (this.value === "cubic")
-                        bubbleType = kBT.CUBIC;
-                    else if(this.value === "quadratic")
-                        bubbleType = kBT.QUADRATIC;
-                    else
-                        bubbleType = kBT.LINEAR;
-                    updateBubbles();
-                }
-            );
+            .on('change', function () {
+                if      (this.value === "cubic")     bubbleType = kBT.CUBIC;
+                else if (this.value === "quadratic") bubbleType = kBT.QUADRATIC;
+                else                                 bubbleType = kBT.LINEAR;
+                updateBubbles();
+            });
 
         $('#textbubbles-set-scale')
             .val(scale * 10)
-            .on(
-                'change',
-                function () {
-                    var x = Number(this.value);
-                    if (!isNaN(x)) {
-                        scale = x / 10;
-                        updateBubbles();
-                    }
+            .on('change', function () {
+                var x = window.parseFloat(this.value);
+                if (!isNaN(x)) {
+                    scale = x / 10;
+                    updateBubbles();
                 }
-            );
+            });
 
         $('#textbubbles-set-spacing')
             .val(spacing * 5)
-            .on(
-                'change',
-                function () {
-                    var x = Number(this.value);
-                    if (!isNaN(x)) {
-                        spacing = x / 5;
-                        updateBubbles();
-                    }
+            .on('change', function () {
+                var x = window.parseFloat(this.value);
+                if (!window.isNaN(x)) {
+                    spacing = x / 5;
+                    updateBubbles();
                 }
-            );
+            });
 
         $('#textbubbles-set-gridded')
-            .on(
-                'change',
-                function () {
-                    isGridded = !!this.checked;
-                    updateBubbles();
-                }
-            );
+            .on('change', function () {
+                isGridded = !!this.checked;
+                updateBubbles();
+            });
 
         $('#textbubbles-set-reset')
-            .on(
-                'click',
-                function () {
-                    scale     = DEF_SCALE;
-                    spacing   = DEF_SPACING;
-                    isGridded = false;
-                    $('#textbubbles-set-scale').val(scale * 10);
-                    $('#textbubbles-set-spacing').val(spacing * 5);
-                    $('#textbubbles-set-gridded').attr('checked', isGridded);
-                    updateBubbles();
-                }
-            );
+            .on('click', function () {
+                scale     = DEF_SCALE;
+                spacing   = DEF_SPACING;
+                isGridded = false;
+                $('#textbubbles-set-scale').val(scale * 10);
+                $('#textbubbles-set-spacing').val(spacing * 5);
+                $('#textbubbles-set-gridded').attr('checked', isGridded);
+                updateBubbles();
+            });
 
         $('#textbubbles-get-url')
-            .on(
-                'click',
-                function () {
-                    if ($input.val().length) {
-                        window.prompt(
-                            'Your link:',
-                            window.location.href.split('#')[0] + '#' + window.escape($input.val())
-                        );
-                    }
-                    else {
-                        window.alert('Input field is empty!');
-                    }
+            .on('click', function () {
+                if ($input.val().length) {
+                    window.prompt(
+                        'Your link:',
+                        window.location.href.split('#')[0] + '#' +
+                        window.escape($input.val())
+                    );
                 }
-            );
+                else {
+                    window.alert('Input field is empty!');
+                }
+            });
+
+        // Init
 
         $input.on('input', updateBubbles).trigger('input');
         readDataFromURL();
 
     });
 
-})();
+})(window, document, jQuery);

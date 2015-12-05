@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head>
 
@@ -41,12 +41,12 @@
 <body>
     <div class="wrapper-main" data-role="page">
         <div class="wrapper-head">
-            <div class="wrapper-head-title">
+            <header class="wrapper-head-title">
                 <h1>Text Bubbles</h1>
                 <p>Visualize text as a series of bubbles representing word size.</p>
                 <hr />
-            </div>
-            <div class="wrapper-head-block" onclick="this.classList.toggle('open')">
+            </header>
+            <aside class="wrapper-head-block" onclick="this.classList.toggle('open')">
                 <h2>Settings</h2>
                 <div class="wrapper-head-hidable">
                     <p>
@@ -69,8 +69,8 @@
                         <input type="button"   id="textbubbles-set-reset" value="Reset" />
                     </p>
                 </div>
-            </div>
-            <div class="wrapper-head-block open" onclick="this.classList.toggle('open')">
+            </aside>
+            <aside class="wrapper-head-block open" onclick="this.classList.toggle('open')">
                 <h2>Text Input</h2>
                 <div class="wrapper-head-hidable">
                     <textarea id="textbubbles-input" placeholder="Enter text here ...">
@@ -147,8 +147,8 @@ But that is not ALL I can do!’
 Said the cat…
                     </textarea>
                 </div>
-            </div>
-            <div class="wrapper-head-block" onclick="this.classList.toggle('open')">
+            </aside>
+            <aside class="wrapper-head-block" onclick="this.classList.toggle('open')">
                 <h2>Statistics</h2>
                 <div class="wrapper-head-hidable">
                     <p>
@@ -176,13 +176,13 @@ Said the cat…
                         <span class="stat-out" id="textbubbles-stat-longest"></span>
                     </p>
                 </div>
-            </div>
+            </aside>
         </div>
-        <div class="wrapper-body">
+        <main class="wrapper-body">
             <div class="wrapper-text" id="textbubbles-output"></div>
-        </div>
+        </main>
         <a class="corner-button" href="https://github.com/krikienoid/textbubbles">
-            Github Link.
+            Link to Github.
         </a>
     </div>
 </body>
