@@ -32,11 +32,11 @@ var textBubbles = (function (window, document, $, undefined) {
     // Bubble size scale
     var kBS = {};
         kBS[kBT.LINEAR]    = 1;
-        kBS[kBT.QUADRATIC] = Math.sqrt(BASE_LEN);
-        kBS[kBT.CUBIC]     = Math.pow(BASE_LEN, 2/3);
+        kBS[kBT.QUADRATIC] = window.Math.sqrt(BASE_LEN);
+        kBS[kBT.CUBIC]     = window.Math.pow(BASE_LEN, 2 / 3);
 
     // Settings
-    var DEF_SCALE    = 5,
+    var DEF_SCALE    = 1,
         DEF_SPACING  = 1,
         scale        = DEF_SCALE,
         spacing      = DEF_SPACING,
@@ -98,10 +98,10 @@ var textBubbles = (function (window, document, $, undefined) {
 
     function getSize (size) {
         switch (bubbleType) {
-            case kBT.QUADRATIC : size = Math.sqrt(size);     break;
-            case kBT.CUBIC     : size = Math.pow(size, 1/3); break;
+            case kBT.QUADRATIC : size = window.Math.sqrt(size);       break;
+            case kBT.CUBIC     : size = window.Math.pow(size, 1 / 3); break;
         }
-        return size * scale * kBS[bubbleType];
+        return size * kBS[bubbleType] / 4;
     }
 
     function updateBubbles () {
@@ -117,16 +117,20 @@ var textBubbles = (function (window, document, $, undefined) {
                 size = getSize(len);
 
             if (len) {
+
                 bubbles.push(
                     $('<div />').addClass('wrapper-word-bubble').append(
                         $('<div />')
                             .addClass('word-bubble')
                             .attr('data-title', '[' + len + '] ' + word)
-                            .width(size)
-                            .height(size)
-                            .css('background-color', 'hsl(' + (len * 7 - 300) + ', 50%, 50%)')
+                            .css({
+                                'width'  : size + 'em',
+                                'height' : size + 'em',
+                                'background-color' : 'hsl(' + (len * 7 - 300) + ', 50%, 50%)'
+                            })
                     )
                 );
+
                 if (isStatsOn) {
                     stats.wordNums++;
                     if (word.replace(rgxNonLetter, '').length) {
@@ -138,6 +142,7 @@ var textBubbles = (function (window, document, $, undefined) {
                         stats.longest = word;
                     }
                 }
+
             }
 
         });
@@ -158,6 +163,13 @@ var textBubbles = (function (window, document, $, undefined) {
 
         $output.empty().append(bubbles);
 
+    }
+
+    function updateOptions () {
+        $('#textbubbles-options').html(
+            '.container-bubbles { font-size : ' + scale + 'em; }' +
+            '.wrapper-word-bubble { margin : ' + spacing * scale + 'px; }'
+        );
     }
 
     function readDataFromURL () {
@@ -191,22 +203,22 @@ var textBubbles = (function (window, document, $, undefined) {
             });
 
         $('#textbubbles-set-scale')
-            .val(scale * 10)
+            .val(scale)
             .on('change', function () {
                 var x = window.parseFloat(this.value);
-                if (!isNaN(x)) {
-                    scale = x / 10;
-                    updateBubbles();
+                if (!window.isNaN(x) && x > 0) {
+                    scale = x;
+                    updateOptions();
                 }
             });
 
         $('#textbubbles-set-spacing')
-            .val(spacing * 5)
+            .val(spacing)
             .on('change', function () {
                 var x = window.parseFloat(this.value);
-                if (!window.isNaN(x)) {
-                    spacing = x / 5;
-                    updateBubbles();
+                if (!window.isNaN(x) && x >= 0) {
+                    spacing = x;
+                    updateOptions();
                 }
             });
 
@@ -222,10 +234,10 @@ var textBubbles = (function (window, document, $, undefined) {
                 scale     = DEF_SCALE;
                 spacing   = DEF_SPACING;
                 isGridded = false;
-                $('#textbubbles-set-scale').val(scale * 10);
-                $('#textbubbles-set-spacing').val(spacing * 5);
-                $('#textbubbles-set-gridded').attr('checked', isGridded);
-                updateBubbles();
+                $('#textbubbles-set-scale').val(scale);
+                $('#textbubbles-set-spacing').val(spacing);
+                $('#textbubbles-set-gridded').prop('checked', isGridded).trigger('change');
+                updateOptions();
             });
 
         $('#textbubbles-get-url')
@@ -244,8 +256,9 @@ var textBubbles = (function (window, document, $, undefined) {
 
         // Init
 
-        $input.on('input', updateBubbles).trigger('input');
+        updateOptions();
         readDataFromURL();
+        $input.on('input', updateBubbles).trigger('input');
 
     });
 
