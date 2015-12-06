@@ -91,8 +91,10 @@ body,
 }
 
 .container-bubbles {
-    width   : 100%;
-    padding : 24px;
+    width      : 100%;
+    min-height : 100%;
+    padding    : 24px;
+    padding-bottom : 72px;
 }
 
 /* //// Media Queries //// */
@@ -192,6 +194,7 @@ body,
 
 /* Bubble Positioning */
 
+.container-bubbles,
 .wrapper-word-bubble,
 .word-bubble {
     overflow : visible;
