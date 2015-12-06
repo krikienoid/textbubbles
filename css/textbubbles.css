@@ -209,6 +209,17 @@ body,
     font-size     : 12px;
 }
 
+.wrapper-head input,
+.wrapper-head select {
+    height : 24px;
+    margin : 2px 0;
+    vertical-align : middle;
+}
+
+.wrapper-head input:not(:first-child) {
+    margin-left : 16px;
+}
+
 .stat-out {
     color       : #ffd700;
     font-weight : bold;
