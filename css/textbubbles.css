@@ -42,7 +42,10 @@ body,
 /* Head */
 
 .wrapper-head {
+    position            : relative;
+    z-index             : 1;
     padding             : 6px;
+    overflow            : visible;
     background-color    : #333;
     border              : 0 groove #555;
     border-right-width  : 4px;
@@ -52,7 +55,7 @@ body,
 
 .wrapper-head-title,
 .wrapper-head-block,
-.wrapper-head-hidable {
+.wrapper-head-content {
     width   : 100%;
     height  : auto;
 }
@@ -64,10 +67,9 @@ body,
 
 .wrapper-head-title {
     background-color : #333;
-    border           : 0 groove #555;
 }
 
-.wrapper-head-hidable {
+.wrapper-head-content {
     padding       : 8px;
     background    : rgba(0, 0, 0, 0.8);
     border-radius : 3px;
@@ -97,9 +99,21 @@ body,
     padding-bottom : 72px;
 }
 
+/* Tabs */
+
+.head-tab-control {
+    position : absolute;
+    top      : -9999px;
+    left     : -9999px;
+}
+
+.head-tab-title {
+    transition : color 0.2s;
+}
+
 /* //// Media Queries //// */
 
-/* Desktop (default) */
+/* Large Screens (default) */
 
 .wrapper-main {
     padding-top  : 0;
@@ -113,7 +127,7 @@ body,
     margin-left : -240px;
 }
 
-/* Mobile */
+/* Small Screens */
 
 @media screen and (max-width : 600px) and (orientation : portrait) {
 
@@ -128,9 +142,13 @@ body,
         margin-top  : -240px;
         margin-left : 0;
         padding-top : 72px;
-        overflow    : auto;
+        background-color    : #000;
         border-right-width  : 0;
         border-bottom-width : 4px;
+    }
+
+    .wrapper-head-block {
+        width : auto;
     }
 
     .wrapper-head-title {
@@ -138,6 +156,26 @@ body,
         position : fixed;
         margin   : -72px -6px 0 -6px;
         border-bottom-width : 4px;
+    }
+
+    .head-tab-title:hover,
+    .head-tab-title:focus {
+        color : #ffd700;
+    }
+
+    .head-tab-title > label {
+        cursor : pointer;
+    }
+
+    .wrapper-head-content {
+        width    : 100%;
+        display  : none;
+        position : absolute;
+        left     : 0;
+    }
+
+    .wrapper-head-block > .head-tab-control:checked ~ .wrapper-head-content {
+        display: block;
     }
 
 }
@@ -150,12 +188,18 @@ body,
     font-family : sans-serif;
 }
 
+.wrapper-head h1,
+.wrapper-head h2 {
+    white-space : nowrap;
+}
+
 .wrapper-head h1 {
     font-size : 32px;
 }
 
 .wrapper-head h2 {
     font-size : 14px;
+    margin-bottom : 4px;
 }
 
 .wrapper-head p,

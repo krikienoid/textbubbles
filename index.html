@@ -49,9 +49,10 @@
                 <p>Visualize text as a series of bubbles representing word size.</p>
                 <hr />
             </header>
-            <aside class="wrapper-head-block" onclick="this.classList.toggle('open')">
-                <h2>Settings</h2>
-                <div class="wrapper-head-hidable">
+            <aside class="wrapper-head-block">
+                <input type="radio" class="head-tab-control" name="head-tabs" id="head-tab-opts" />
+                <h2 class="head-tab-title"><label for="head-tab-opts">Settings</label></h2>
+                <div class="wrapper-head-content">
                     <p>
                         <select id="textbubbles-set-type">
                             <option value="linear">Linear</option>
@@ -75,9 +76,10 @@
                     </p>
                 </div>
             </aside>
-            <aside class="wrapper-head-block open" onclick="this.classList.toggle('open')">
-                <h2>Text Input</h2>
-                <div class="wrapper-head-hidable">
+            <aside class="wrapper-head-block">
+                <input type="radio" class="head-tab-control" name="head-tabs" id="head-tab-text" checked />
+                <h2 class="head-tab-title"><label for="head-tab-text">Text Input</label></h2>
+                <div class="wrapper-head-content">
                     <textarea id="textbubbles-input" placeholder="Enter text here ...">
 The Cat in the Hat
 
@@ -153,9 +155,10 @@ Said the cat…
                     </textarea>
                 </div>
             </aside>
-            <aside class="wrapper-head-block" onclick="this.classList.toggle('open')">
-                <h2>Statistics</h2>
-                <div class="wrapper-head-hidable">
+            <aside class="wrapper-head-block">
+                <input type="radio" class="head-tab-control" name="head-tabs" id="head-tab-stat" />
+                <h2 class="head-tab-title"><label for="head-tab-stat">Statistics</label></h2>
+                <div class="wrapper-head-content">
                     <p>
                         Word count:
                         <span class="stat-out" id="textbubbles-stat-wordnums"></span>
