@@ -118,17 +118,14 @@ var textBubbles = (function (window, document, $, undefined) {
 
             if (len) {
                 bubbles.push(
-                    $('<div />')
-                        .addClass('word-bubble')
-                        .attr('data-title', '[' + len + '] ' + word)
-                        .width(size)
-                        .height(size)
-                        .css('background-color', 'hsl(' + (len * 7 - 300) + ', 50%, 50%)')
-                        .css(
-                            (isGridded)?
-                                {'margin' : (spacing - size + 10) / 2} :
-                                {'margin-right' : spacing}
-                        )
+                    $('<div />').addClass('wrapper-word-bubble').append(
+                        $('<div />')
+                            .addClass('word-bubble')
+                            .attr('data-title', '[' + len + '] ' + word)
+                            .width(size)
+                            .height(size)
+                            .css('background-color', 'hsl(' + (len * 7 - 300) + ', 50%, 50%)')
+                    )
                 );
                 if (isStatsOn) {
                     stats.wordNums++;
@@ -216,7 +213,8 @@ var textBubbles = (function (window, document, $, undefined) {
         $('#textbubbles-set-gridded')
             .on('change', function () {
                 isGridded = !!this.checked;
-                updateBubbles();
+                if (isGridded) $output.addClass('fixed-grid');
+                else           $output.removeClass('fixed-grid');
             });
 
         $('#textbubbles-set-reset')
