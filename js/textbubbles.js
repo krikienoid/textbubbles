@@ -121,7 +121,7 @@ var textBubbles = (function (window, document, $, undefined) {
                     $('<div />').addClass('wrapper-word-bubble')
                         .append(
                             $('<div />').addClass('word-bubble')
-                                .attr('data-title', '[' + len + '] ' + word)
+                                .attr('data-title', word + ' [' + len + ']')
                                 .css({
                                     'width'  : size + 'em',
                                     'height' : size + 'em',
@@ -160,7 +160,8 @@ var textBubbles = (function (window, document, $, undefined) {
                 (stats.alphNums)? (stats.alphNums / stats.wordNums).toFixed(1) : 0
             );
             $('#textbubbles-stat-longest')  .text(
-                '[' + stats.longest.replace(rgxNonAlphNum, '').length + ']' + stats.longest
+                stats.longest +
+                ' [' + stats.longest.replace(rgxNonAlphNum, '').length + ']'
             );
         }
 
@@ -244,6 +245,7 @@ var textBubbles = (function (window, document, $, undefined) {
                 $('#textbubbles-set-scale').val(scale);
                 $('#textbubbles-set-spacing').val(spacing);
                 $('#textbubbles-set-gridded').prop('checked', false).trigger('change');
+                $('#textbubbles-set-reveal').prop('checked', false).trigger('change');
                 updateOptions();
             });
 
