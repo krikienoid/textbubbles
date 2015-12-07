@@ -41,7 +41,6 @@ var textBubbles = (function (window, document, $, undefined) {
         scale        = DEF_SCALE,
         spacing      = DEF_SPACING,
         isBreaksOn   = true,
-        isGridded    = false,
         isStatsOn    = true,
         bubbleType   = kBT.LINEAR;
 
@@ -119,16 +118,20 @@ var textBubbles = (function (window, document, $, undefined) {
             if (len) {
 
                 bubbles.push(
-                    $('<div />').addClass('wrapper-word-bubble').append(
-                        $('<div />')
-                            .addClass('word-bubble')
-                            .attr('data-title', '[' + len + '] ' + word)
-                            .css({
-                                'width'  : size + 'em',
-                                'height' : size + 'em',
-                                'background-color' : 'hsl(' + (len * 7 - 300) + ', 50%, 50%)'
-                            })
-                    )
+                    $('<div />').addClass('wrapper-word-bubble')
+                        .append(
+                            $('<div />').addClass('word-bubble')
+                                .attr('data-title', '[' + len + '] ' + word)
+                                .css({
+                                    'width'  : size + 'em',
+                                    'height' : size + 'em',
+                                    'background-color' : 'hsl(' + (len * 7 - 300) + ', 50%, 50%)'
+                                })
+
+                        )
+                        .append(
+                            $('<div />').addClass('word').text(word + ' ')
+                        )
                 );
 
                 if (isStatsOn) {
@@ -224,19 +227,23 @@ var textBubbles = (function (window, document, $, undefined) {
 
         $('#textbubbles-set-gridded')
             .on('change', function () {
-                isGridded = !!this.checked;
-                if (isGridded) $output.addClass('fixed-grid');
-                else           $output.removeClass('fixed-grid');
+                if (this.checked) $output.addClass('fixed-grid');
+                else              $output.removeClass('fixed-grid');
+            });
+
+        $('#textbubbles-set-reveal')
+            .on('change', function () {
+                if (this.checked) $output.addClass('reveal-words');
+                else              $output.removeClass('reveal-words');
             });
 
         $('#textbubbles-set-reset')
             .on('click', function () {
                 scale     = DEF_SCALE;
                 spacing   = DEF_SPACING;
-                isGridded = false;
                 $('#textbubbles-set-scale').val(scale);
                 $('#textbubbles-set-spacing').val(spacing);
-                $('#textbubbles-set-gridded').prop('checked', isGridded).trigger('change');
+                $('#textbubbles-set-gridded').prop('checked', false).trigger('change');
                 updateOptions();
             });
 

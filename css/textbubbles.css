@@ -251,13 +251,21 @@ body,
 
 .container-bubbles,
 .wrapper-word-bubble,
-.word-bubble {
+.word-bubble,
+.word {
     overflow : visible;
 }
 
+.container-bubbles {
+    font-family : sans-serif;
+    transition  : font-size 0.2s;
+}
+
 .wrapper-word-bubble {
+    position       : relative;
     display        : inline-block;
     vertical-align : middle;
+    transition     : margin 1s;
 }
 
 .fixed-grid .wrapper-word-bubble {
@@ -294,6 +302,44 @@ body,
 .word-bubble:hover {
     z-index    : 9999;
     box-shadow : inset 200px 200px rgba(0, 0, 0, 0.4);
+}
+
+/* Words */
+
+.word {
+    display     : inline-block;
+    position    : absolute;
+    top         : -9999px;
+    left        : -9999px;
+    z-index     : 1;
+    font-size   : 12px;
+    line-height : 22px;
+    text-align  : center;
+    clear       : both;
+}
+
+.word:before {
+    content : ' ';
+}
+
+.reveal-words .word-bubble {
+    display : block;
+    float   : none;
+    margin  : 0 auto;
+}
+
+.reveal-words .word {
+    width    : 100%;
+    position : relative;
+    top      : 0;
+    left     : 0;
+}
+
+.reveal-words.fixed-grid .word {
+    position : absolute;
+    top      : initial;
+    left     : 0;
+    bottom   : -1.5em;
 }
 
 /* CSS Tooltips */
