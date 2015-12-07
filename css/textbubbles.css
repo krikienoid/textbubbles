@@ -343,6 +343,10 @@ body,
     bottom   : -1.5em;
 }
 
+.container-bubbles:not(.reveal-breaks) br {
+    display : none;
+}
+
 /* CSS Tooltips */
 
 .word-bubble:hover:after {

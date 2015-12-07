@@ -45,7 +45,7 @@ var textBubbles = (function (window, document, $, undefined) {
         bubbleType   = kBT.LINEAR;
 
     // Regex
-    var rgxUTF        = (
+    var charLetter    = (
             '\\u00ad' +
             '\\u00c0-\\u00d6\\u00d8-\\u00f6\\u00d8-\\u01bf' + // Extended Latin
             '\\u01c4-\\u02af\\u0370-\\u0373\\u0376\\u0377'  + // Greek and Russian
@@ -65,13 +65,25 @@ var textBubbles = (function (window, document, $, undefined) {
             '\\u09dc-\\u09e1\\u09e6-\\u09f1' +
             ''
         ),
-        rgxBoundary   = new RegExp('\\b'),
-        rgxDelimiter  = new RegExp('[\\s\\0]'),
-        rgxTab        = new RegExp('\\t', 'g'),
-        rgxBreak      = new RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
-        rgxNonWord    = new RegExp('[^\\w'       + rgxUTF + '\\.\\-\'’]'),
-        rgxNonAlphNum = new RegExp('[^a-zA-Z\\d' + rgxUTF + ']', 'g'),
-        rgxNonLetter  = new RegExp('[^a-zA-Z'    + rgxUTF + ']', 'g');
+        rgxDelimiter  = new window.RegExp(
+
+            // zwc followed by [whitespace, null, or new-line] OR
+            '(?=[\\s\\0\\n])|' +
+
+            // zwc followed by [en-dash, em-dash, or slash] OR
+            '(?=[\\u2013\\u2014\\/])|' +
+
+            // zwc followed by [period, or comma]
+            // followed by [NOT digit, whitespace, null, new-line, or period] OR
+            '(?=[\\.\\,](?=[^\\d\\s\\0\\n\\.]))|' +
+
+            // zwc followed by dash followed by digit
+            '(?=\\-(?=\\d))'
+
+        ),
+        rgxBreak      = new window.RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
+        rgxNonAlphNum = new window.RegExp('[^a-zA-Z\\d' + charLetter + ']', 'g'),
+        rgxNonLetter  = new window.RegExp('[^a-zA-Z'    + charLetter + ']', 'g');
 
     // DOM element refs
     var $input,
@@ -105,7 +117,7 @@ var textBubbles = (function (window, document, $, undefined) {
 
     function updateBubbles () {
 
-        var words   = $input.val().split(rgxNonWord),
+        var words   = $input.val().replace(rgxBreak, ' \n').split(rgxDelimiter),
             bubbles = [];
 
         resetStats();
@@ -115,37 +127,35 @@ var textBubbles = (function (window, document, $, undefined) {
             var len  = word.replace(rgxNonAlphNum, '').length,
                 size = getSize(len);
 
-            if (len) {
+            if (word.search(rgxBreak) >= 0) bubbles.push($('<br />'));
 
-                bubbles.push(
-                    $('<div />').addClass('wrapper-word-bubble')
-                        .append(
-                            $('<div />').addClass('word-bubble')
-                                .attr('data-title', word + ' [' + len + ']')
-                                .css({
-                                    'width'  : size + 'em',
-                                    'height' : size + 'em',
-                                    'background-color' : 'hsl(' + (len * 7 - 300) + ', 50%, 50%)'
-                                })
+            bubbles.push(
+                $('<div />').addClass('wrapper-word-bubble')
+                    .append(
+                        $('<div />').addClass('word-bubble')
+                            .attr('data-title', word + ' [' + len + ']')
+                            .css({
+                                'width'  : size + 'em',
+                                'height' : size + 'em',
+                                'background-color' : 'hsl(' + (len * 7 - 300) + ', 50%, 50%)'
+                            })
 
-                        )
-                        .append(
-                            $('<div />').addClass('word').text(word + ' ')
-                        )
-                );
+                    )
+                    .append(
+                        $('<div />').addClass('word').text(word + ' ')
+                    )
+            );
 
-                if (isStatsOn) {
-                    stats.wordNums++;
-                    if (word.replace(rgxNonLetter, '').length) {
-                        stats.words++;
-                    }
-                    stats.alphNums += len;
-                    stats.letters  += word.replace(rgxNonLetter, '').length;
-                    if (len > stats.longest.replace(rgxNonAlphNum, '').length) {
-                        stats.longest = word;
-                    }
+            if (isStatsOn) {
+                stats.wordNums++;
+                if (word.replace(rgxNonLetter, '').length) {
+                    stats.words++;
                 }
-
+                stats.alphNums += len;
+                stats.letters  += word.replace(rgxNonLetter, '').length;
+                if (len > stats.longest.replace(rgxNonAlphNum, '').length) {
+                    stats.longest = word;
+                }
             }
 
         });
@@ -238,6 +248,12 @@ var textBubbles = (function (window, document, $, undefined) {
                 else              $output.removeClass('reveal-words');
             });
 
+        $('#textbubbles-set-breaks')
+            .on('change', function () {
+                if (this.checked) $output.addClass('reveal-breaks');
+                else              $output.removeClass('reveal-breaks');
+            });
+
         $('#textbubbles-set-reset')
             .on('click', function () {
                 scale     = DEF_SCALE;
@@ -246,6 +262,7 @@ var textBubbles = (function (window, document, $, undefined) {
                 $('#textbubbles-set-spacing').val(spacing);
                 $('#textbubbles-set-gridded').prop('checked', false).trigger('change');
                 $('#textbubbles-set-reveal').prop('checked', false).trigger('change');
+                $('#textbubbles-set-breaks').prop('checked', false).trigger('change');
                 updateOptions();
             });
 
