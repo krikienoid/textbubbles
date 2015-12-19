@@ -67,18 +67,20 @@ var textBubbles = (function (window, document, $, undefined) {
         ),
         rgxDelimiter  = new window.RegExp(
 
-            // zwc followed by [whitespace, null, or new-line] OR
-            '(?=[\\s\\0\\n])|' +
+            // nwc NOT followed by [letter, digit, dash, period, or comma] OR
+            '\\b(?![a-zA-Z\\d' + charLetter + '\\-\\.\\,])|' +
 
-            // zwc followed by [en-dash, em-dash, or slash] OR
-            '(?=[\\u2013\\u2014\\/])|' +
+            // nwc followed by dash followed by digit OR
+            '\\b(?=\\-\\d)|' +
 
-            // zwc followed by [period, or comma]
-            // followed by [NOT digit, whitespace, null, new-line, or period] OR
-            '(?=[\\.\\,](?=[^\\d\\s\\0\\n\\.]))|' +
+            // nwc followed by [period, or comma] followed by NOT digit OR
+            '\\b(?=[\\.\\,]\\D)|' +
 
-            // zwc followed by dash followed by digit
-            '(?=\\-(?=\\d))'
+            // zwc followed by dash followed by NOT [letter, or digit] OR
+            '(?=\\-[^a-zA-Z\\d' + charLetter + '])|' +
+
+            // zwc followed by underscore
+            '(?=_)'
 
         ),
         rgxBreak      = new window.RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
