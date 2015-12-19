@@ -124,27 +124,32 @@ var textBubbles = (function (window, document, $, undefined) {
 
         $.each(words, function (i, word) {
 
-            var len  = word.replace(rgxNonAlphNum, '').length,
-                size = getSize(len);
+            var len     = word.replace(rgxNonAlphNum, '').length,
+                size    = getSize(len),
+                $bubble = $('<div />').addClass('wrapper-word-bubble');
 
             if (word.search(rgxBreak) >= 0) bubbles.push($('<br />'));
 
-            bubbles.push(
-                $('<div />').addClass('wrapper-word-bubble')
-                    .append(
-                        $('<div />').addClass('word-bubble')
-                            .attr('data-title', word + ' [' + len + ']')
-                            .css({
-                                'width'  : size + 'em',
-                                'height' : size + 'em',
-                                'background-color' : 'hsl(' + (len * 7 - 300) + ', 50%, 50%)'
-                            })
+            if (len) {
+                $bubble.append(
+                    $('<div />').addClass('word-bubble')
+                        .attr('data-title', word + ' [' + len + ']')
+                        .css({
+                            'width'  : size + 'em',
+                            'height' : size + 'em',
+                            'background-color' : 'hsl(' + (len * 7 - 300) + ', 50%, 50%)'
+                        })
+                );
+            }
+            else {
+                $bubble.addClass('no-word');
+            }
 
-                    )
-                    .append(
-                        $('<div />').addClass('word').text(word + ' ')
-                    )
+            $bubble.append(
+                $('<div />').addClass('word').text(word + ' ')
             );
+
+            bubbles.push($bubble);
 
             if (isStatsOn) {
                 stats.wordNums++;
