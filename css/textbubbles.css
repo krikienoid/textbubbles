@@ -268,11 +268,18 @@ body,
     transition     : margin 1s;
 }
 
+/* Bubble Settings */
+
 .fixed-grid .wrapper-word-bubble {
     display : block;
     float   : left;
     width   : 16px;
     height  : 16px;
+}
+
+.fixed-grid:not(.reveal-words) .wrapper-word-bubble.no-word {
+    width   : 0;
+    height  : 0;
 }
 
 .fixed-grid .word-bubble {
@@ -285,6 +292,38 @@ body,
          -o-transform : translateX(-50%) translateY(-50%);
         -ms-transform : translateX(-50%) translateY(-50%);
             transform : translateX(-50%) translateY(-50%);
+}
+
+.reveal-words .word-bubble {
+    display : block;
+    float   : none;
+    margin  : 0 auto;
+}
+
+.reveal-words .word {
+    width    : 100%;
+    position : relative;
+    top      : 0;
+    left     : 0;
+}
+
+.reveal-words.fixed-grid .word {
+    position : absolute;
+    top      : initial;
+    left     : 0;
+    bottom   : -1.5em;
+}
+
+.container-bubbles:not(.reveal-words) .wrapper-word-bubble.no-word {
+    margin : 0;
+}
+
+.container-bubbles:not(.reveal-breaks) br {
+    display : none;
+}
+
+.container-bubbles.reveal-breaks br + .wrapper-word-bubble {
+    clear : left;
 }
 
 /* Word Bubbles */
@@ -321,38 +360,6 @@ body,
 
 .word:before {
     content : ' ';
-}
-
-.reveal-words .word-bubble {
-    display : block;
-    float   : none;
-    margin  : 0 auto;
-}
-
-.reveal-words .word {
-    width    : 100%;
-    position : relative;
-    top      : 0;
-    left     : 0;
-}
-
-.reveal-words.fixed-grid .word {
-    position : absolute;
-    top      : initial;
-    left     : 0;
-    bottom   : -1.5em;
-}
-
-.container-bubbles:not(.reveal-words) .wrapper-word-bubble.no-word {
-    margin : 0;
-}
-
-.container-bubbles:not(.reveal-breaks) br {
-    display : none;
-}
-
-.container-bubbles.reveal-breaks br + .wrapper-word-bubble {
-    clear : left;
 }
 
 /* CSS Tooltips */
