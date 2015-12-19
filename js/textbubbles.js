@@ -80,8 +80,8 @@ var textBubbles = (function (window, document, $, undefined) {
             // zwc followed by dash followed by NOT [letter, or digit] OR
             '(?=\\-[^' + charLetter + '\\d])|' +
 
-            // zwc followed by underscore
-            '(?=_)'
+            // zwc followed by [whitespace, null, new-line, or underscore]
+            '(?=[\\s\\0\\n_])'
 
         ),
         rgxBreak      = new window.RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
