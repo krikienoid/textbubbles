@@ -42,7 +42,7 @@ var textBubbles = (function (window, document, $, undefined) {
         spacing      = DEF_SPACING,
         isBreaksOn   = true,
         isStatsOn    = true,
-        bubbleType   = kBT.LINEAR;
+        bubbleType   = kBT.QUADRATIC;
 
     // Regex
     var charLetter    = (
