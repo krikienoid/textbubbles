@@ -351,6 +351,10 @@ body,
     display : none;
 }
 
+.container-bubbles.reveal-breaks br + .wrapper-word-bubble {
+    clear : left;
+}
+
 /* CSS Tooltips */
 
 .word-bubble:hover:after {
