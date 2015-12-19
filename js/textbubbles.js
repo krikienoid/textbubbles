@@ -46,6 +46,7 @@ var textBubbles = (function (window, document, $, undefined) {
 
     // Regex
     var charLetter    = (
+            'a-zA-Z'  + // Latin
             '\\u00ad' +
             '\\u00c0-\\u00d6\\u00d8-\\u00f6\\u00d8-\\u01bf' + // Extended Latin
             '\\u01c4-\\u02af\\u0370-\\u0373\\u0376\\u0377'  + // Greek and Russian
@@ -68,7 +69,7 @@ var textBubbles = (function (window, document, $, undefined) {
         rgxDelimiter  = new window.RegExp(
 
             // nwc NOT followed by [letter, digit, dash, period, or comma] OR
-            '\\b(?![a-zA-Z\\d' + charLetter + '\\-\\.\\,])|' +
+            '\\b(?![' + charLetter + '\\d\\-\\.\\,])|' +
 
             // nwc followed by dash followed by digit OR
             '\\b(?=\\-\\d)|' +
@@ -77,15 +78,15 @@ var textBubbles = (function (window, document, $, undefined) {
             '\\b(?=[\\.\\,]\\D)|' +
 
             // zwc followed by dash followed by NOT [letter, or digit] OR
-            '(?=\\-[^a-zA-Z\\d' + charLetter + '])|' +
+            '(?=\\-[^' + charLetter + '\\d])|' +
 
             // zwc followed by underscore
             '(?=_)'
 
         ),
         rgxBreak      = new window.RegExp('[\\r\\n\\v\\f]|\\r\\n', 'g'),
-        rgxNonAlphNum = new window.RegExp('[^a-zA-Z\\d' + charLetter + ']', 'g'),
-        rgxNonLetter  = new window.RegExp('[^a-zA-Z'    + charLetter + ']', 'g');
+        rgxNonAlphNum = new window.RegExp('[^' + charLetter + '\\d]', 'g'),
+        rgxNonLetter  = new window.RegExp('[^' + charLetter + ']', 'g');
 
     // DOM element refs
     var $input,
